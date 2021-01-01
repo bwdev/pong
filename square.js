@@ -12,4 +12,15 @@ class Square {
     }
 }
 
-export { Square }
+class Rectangle {
+    constructor(ctx) { this.ctx = ctx; }
+
+    draw = (xpos, ypos, sidex, sidey, color) => {
+        this.ctx.beginPath();
+        this.ctx.fillStyle = color;
+        this.ctx.fillRect(xpos, ypos, sidex, sidey);
+        this.ctx.closePath();
+    }
+}
+
+export { Square, Rectangle }
