@@ -33,6 +33,9 @@ export class Engine {
             console.log(e);
             if (e.code === 'ArrowDown') self.rightYPos += 100;
             if (e.code === 'ArrowUp') self.rightYPos -= 100;
+
+            if (e.code === 'KeyX') self.leftYPos += 100;
+            if (e.code === 'KeyW') self.leftYPos -= 100;
         })
     }
 
@@ -48,10 +51,11 @@ export class Engine {
 
     update() {
         let didHitRight = false;
-        if (self.xPos < 0) self.xSpeed = -self.xSpeed;
+        let didHitLeft = false;
+
         if (self.yPos > self._height || self.yPos < 0) self.ySpeed = -self.ySpeed;
 
-        if ((self.xPos > (self._width - 15)) && (self.yPos < self.rightYPos + self.bumperHeight)) {
+        if ((self.xPos > (self._width - 15)) && (self.yPos < (self.rightYPos + self.bumperHeight) && self.yPos > (self.rightYPos - self.bumperHeight))) {
             console.log(self.yPos, self.rightYPos);
             didHitRight = true;
             self.xSpeed = -self.xSpeed;
@@ -60,26 +64,26 @@ export class Engine {
             rightScore.innerHTML = self.right;
         }
 
+        if ((self.xPos < 0) && (self.yPos < (self.leftYPos + self.bumperHeight) && self.yPos > (self.leftYPos - self.bumperHeight))) {
+            console.log(self.yPos, self.leftYPos);
+            didHitLeft = true;
+            self.xSpeed = -self.xSpeed;
+            self.left++;
+            const leftScore = document.getElementById('leftScore');
+            leftScore.innerHTML = self.left;
+        }
+
+        if (self.xPos < 0 && !didHitLeft) {
+            self.xPos = self._width / 2;
+            self.yPos = self._height / 2;
+        }
+
         if (self.xPos > self._width && !didHitRight) {
             self.xPos = self._width / 2;
             self.yPos = self._height / 2;
         }
-        // if (self.yPos > self._height || self.yPos < 0) self.ySpeed = -self.ySpeed;
-
 
         self.xPos += self.xSpeed;
         self.yPos += self.ySpeed;
-
-        // if ((self.xPos > self._width)) {
-        //     self.left++;
-        //     const leftScore = document.getElementById('leftScore');
-        //     leftScore.innerHTML = self.left;
-        // }
-
-        // if (self.xPos < 0) {
-        //     self.right++;
-        //     const rightScore = document.getElementById('rightScore');
-        //     rightScore.innerHTML = self.right;
-        // }
     }
 }
